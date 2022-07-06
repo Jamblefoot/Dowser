@@ -24,6 +24,8 @@ public class Well : MonoBehaviour
 
     float richness = 0;
     int output = 0; //this will be code for type of output
+
+    public Ship ship;
     // Start is called before the first frame update
     void Awake()
     {
@@ -148,6 +150,8 @@ public class Well : MonoBehaviour
         {
             lights[i].material.EnableKeyword("_EMISSION");
             lights[i].GetComponent<Light>().enabled = true;
+
+            ship.LaunchPodToPosition(transform.position);
         }
 
         Puddle pud = GetComponentInChildren<Puddle>();

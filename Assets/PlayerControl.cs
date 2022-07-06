@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
     [SerializeField] Transform neck;
+    [SerializeField] Transform body;
     [SerializeField] LayerMask groundLayers;
 
     float moveSpeed = 10;
@@ -39,6 +40,8 @@ public class PlayerControl : MonoBehaviour
 
         neck.localRotation = Quaternion.Euler(headXRot, neck.localRotation.eulerAngles.y, 0)
                             * Quaternion.Euler(0, mouseX, 0);
+
+        body.localRotation = Quaternion.Euler(0, neck.localRotation.eulerAngles.y, 0);
 
         //neck.localRotation = Quaternion.Euler(headXRot, neck.localRotation.eulerAngles.y, 0);
         //neck.localRotation * Quaternion.Euler(mouseY, mouseX, 0);
