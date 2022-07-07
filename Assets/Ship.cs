@@ -50,7 +50,7 @@ public class Ship : MonoBehaviour
         Vector3 offset = pos - transform.position;
         offset.y = 0;
         GameObject pod = Instantiate(podPrefab, transform.position, transform.rotation);
-        pod.GetComponent<Rigidbody>().AddForce(Vector3.up * 2000f + offset.normalized * 5000f, ForceMode.Force);
+        pod.GetComponent<Rigidbody>().AddForce(Vector3.up * 2000f + offset.normalized * 100f * offset.magnitude, ForceMode.Force);
         //well.GetComponent<Well>().GoToLocation(pos);
 
         return pod;

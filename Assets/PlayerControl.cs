@@ -6,10 +6,15 @@ public class PlayerControl : MonoBehaviour
 {
     [SerializeField] Transform neck;
     [SerializeField] Transform body;
+    [SerializeField] Transform legLeft;
+    [SerializeField] Transform legRight;
     [SerializeField] LayerMask groundLayers;
+    [SerializeField] LayerMask kickLayers;
 
     float moveSpeed = 10;
     float jumpPower = 10;
+    float kickPower = 100;
+    float kickTime;
 
     Rigidbody rigid;
 
@@ -43,11 +48,33 @@ public class PlayerControl : MonoBehaviour
 
         body.localRotation = Quaternion.Euler(0, neck.localRotation.eulerAngles.y, 0);
 
+        if(Mathf.Abs(vertical) > 0.1f || Mathf.Abs(horizontal) > 0.1f)
+        {
+            //DO WALKING ANIMATION
+        }
+        else
+        {
+            legLeft.localRotation = Quaternion.Slerp(legLeft.localRotation, Quaternion.identity, Time.deltaTime);
+            legRight.localRotation = Quaternion.Slerp(legRight.localRotation, Quaternion.identity, Time.deltaTime);
+        }
+
+
         //neck.localRotation = Quaternion.Euler(headXRot, neck.localRotation.eulerAngles.y, 0);
         //neck.localRotation * Quaternion.Euler(mouseY, mouseX, 0);
 
         if(Input.GetButtonDown("Jump") && !jumping && grounded)
             StartCoroutine(JumpCo());
+
+        
+
+        if(Input.GetButtonUp("Fire1"))
+        {
+            Kick();
+        }
+
+        if(Input.GetButton("Fire1"))
+            kickTime += Time.deltaTime;
+        else kickTime = 1f;
     }
 
     IEnumerator JumpCo()
@@ -100,5 +127,33 @@ public class PlayerControl : MonoBehaviour
             groundAnchor.localPosition = Vector3.zero;
             groundAnchor.rotation = Quaternion.identity;
         }
+    }
+
+    public void Kick()
+    {
+        //DO ANIMATION STUFF
+        if(legRight.localRotation.eulerAngles.x < legLeft.localRotation.eulerAngles.x)
+        {
+            legRight.localRotation = Quaternion.Euler(-90, 0, 0);
+            legLeft.localRotation = Quaternion.identity;
+        }
+        else
+        {
+            legLeft.localRotation = Quaternion.Euler(-90, 0, 0);
+            legRight.localRotation = Quaternion.identity;
+        }
+
+
+        RaycastHit hit;
+        if(Physics.SphereCast(transform.position + transform.up, 0.25f, body.forward, out hit, 2f, kickLayers, QueryTriggerInteraction.Ignore))
+        {
+            if(hit.collider.attachedRigidbody != null && !hit.collider.attachedRigidbody.isKinematic)
+            {
+                Vector3 force = (hit.collider.attachedRigidbody.worldCenterOfMass - hit.point).normalized;
+                force *= kickPower * Mathf.Min(10f, kickTime);
+                hit.collider.attachedRigidbody.AddForceAtPosition(force, hit.point, ForceMode.Impulse);
+            }
+        }
+
     }
 }

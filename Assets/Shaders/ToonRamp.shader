@@ -7,6 +7,9 @@
 
         _OutlineColor ("Outline Color", Color) = (0,0,0,1)
         _Outline ("Outline Width", Range(0.002, 1)) = 0.005
+
+        _MainTex ("Main Texture", 2D) = "white" {}
+        _Bump ("Bump Texture", 2D) = "bump" {}
     }
     SubShader
     {
@@ -36,14 +39,19 @@
             return c;
         }
 
+        sampler2D _MainTex;
+        sampler2D _Bump;
+
         struct Input
         {
             float2 uv_MainTex;
+            float2 uv_Bump;
         };
 
         void surf (Input IN, inout SurfaceOutput o)
         {
-            o.Albedo = _Color.rgb;
+            o.Albedo = _Color.rgb * tex2D(_MainTex, IN.uv_MainTex).rgb;
+            o.Normal = tex2D(_Bump, IN.uv_Bump).rgb;
         }
         ENDCG
 
