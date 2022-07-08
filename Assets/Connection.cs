@@ -9,4 +9,6 @@ public class Connection : MonoBehaviour
 
     public UnityEvent connectionEstablished;
     public UnityEvent connectionLost;
+
+    public Transform root;
 }

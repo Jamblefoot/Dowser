@@ -8,8 +8,10 @@ public class Connector : MonoBehaviour
     Connection connection;
 
     Rigidbody rigid;
-    LineRenderer line;
+    //LineRenderer line;
+    public Transform tube;
 
+    float searchDistance = 15;
     [SerializeField] LayerMask connectLayer;
 
     public UnityEvent connectionEstablished;
@@ -17,7 +19,22 @@ public class Connector : MonoBehaviour
     void Start()
     {
         rigid = GetComponentInParent<Rigidbody>();
-        line = GetComponentInChildren<LineRenderer>();
+        //line = GetComponentInChildren<LineRenderer>();
+
+        if(tube != null)
+        {
+            Collider tubeCol = tube.GetComponentInChildren<Collider>();
+            foreach(Collider col in rigid.GetComponentsInChildren<Collider>())
+            {
+                if(col != tubeCol)
+                    Physics.IgnoreCollision(col, tubeCol, true);
+            }
+        }
+
+        if(connection == null)
+        {
+            tube.gameObject.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -27,18 +44,22 @@ public class Connector : MonoBehaviour
         {
             if (rigid.velocity.sqrMagnitude < 0.5f)
                 LookForConnection();
+            tube.localScale = new Vector3(1, 1, 0.1f);
+            tube.localRotation = Quaternion.Euler(-90, 0, 0);
         }
         else
         {
-            line.positionCount = 2;
-            line.SetPosition(0, Vector3.zero);
-            line.SetPosition(1, transform.InverseTransformPoint(connection.transform.position));
+            tube.localScale = new Vector3(1, 1, Vector3.Distance(connection.transform.position, transform.position));
+            tube.LookAt(connection.transform.position);
+            //line.positionCount = 2;
+            //line.SetPosition(0, Vector3.zero);
+            //line.SetPosition(1, transform.InverseTransformPoint(connection.transform.position));
         }
     }
 
     void LookForConnection()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 10f, connectLayer, QueryTriggerInteraction.Collide);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, searchDistance, connectLayer, QueryTriggerInteraction.Collide);
         foreach(Collider col in hitColliders)
         {
             Connection con = col.GetComponent<Connection>();
@@ -60,8 +81,17 @@ public class Connector : MonoBehaviour
         Vector3[] pos = new Vector3[2];
         pos[0] = Vector3.zero;
         pos[1] = transform.InverseTransformPoint(connection.transform.position);
-        line.SetPositions(pos);
+        //line.SetPositions(pos);
 
         connectionEstablished.Invoke();
+
+        if(tube != null)
+        {
+            Collider tubeCol = tube.GetComponentInChildren<Collider>();
+            foreach(Collider col in con.root.GetComponentsInChildren<Collider>())
+            {
+                Physics.IgnoreCollision(tubeCol, col, true);
+            }
+        }
     }
 }

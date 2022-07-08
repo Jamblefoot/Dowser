@@ -5443,6 +5443,7 @@ MonoBehaviour:
   connectionLost:
     m_PersistentCalls:
       m_Calls: []
+  root: {fileID: 6577878816815562886}
 --- !u!135 &7796354822362203905
 SphereCollider:
   m_ObjectHideFlags: 0
