@@ -11,4 +11,10 @@ public class Connection : MonoBehaviour
     public UnityEvent connectionLost;
 
     public Transform root;
+
+    public void BreakConnection()
+    {
+        if(occupant != null)
+            occupant.BreakConnection();
+    }
 }

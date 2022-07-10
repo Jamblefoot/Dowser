@@ -111,6 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ab19b82a32bbf2478161d17500c1948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  connection: {fileID: 0}
   tube: {fileID: 6442132234089698209}
   connectLayer:
     serializedVersion: 2
@@ -141,6 +142,33 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
+        m_CallState: 2
+  connectionBroken:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7452074232169276496}
+        m_TargetAssemblyTypeName: Connection, Assembly-CSharp
+        m_MethodName: BreakConnection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4193856578921220309}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &1835100978495575732
 GameObject:
@@ -213,13 +241,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4193856578921220309}
-  m_LocalRotation: {x: 0.9130549, y: -0.023826517, z: 0.053908125, w: -0.40355545}
-  m_LocalPosition: {x: 0.45, y: 1.88, z: -1.38}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3421767451448131653}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 227.254, y: -9.984009, z: 7.3659973}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7452074232169276496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -557,7 +585,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 3
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -586,6 +614,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 424100b2d6be82e459c8109ec3e48f16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigid: {fileID: 0}
 --- !u!1001 &4915556499043591783
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -747,7 +776,7 @@ PrefabInstance:
     - target: {fileID: 5067861064070045810, guid: 0ee0e8492538b4448bddde9e5a061815, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ad6d16d690d904048a14d45735464341, type: 2}
+      objectReference: {fileID: 2100000, guid: 7ac158be5dcc51d4198c289291742997, type: 2}
     - target: {fileID: 5067861064070045810, guid: 0ee0e8492538b4448bddde9e5a061815, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 

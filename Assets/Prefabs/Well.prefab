@@ -155,6 +155,7 @@ GameObject:
   - component: {fileID: 7409598345150115200}
   - component: {fileID: 8633098674999849978}
   - component: {fileID: 5879761757925846035}
+  - component: {fileID: 7975490478401020419}
   m_Layer: 0
   m_Name: LiquidEmitter
   m_TagString: Untagged
@@ -4975,6 +4976,21 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &7975490478401020419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310864370147252406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c8a1733b68745d4d8f6c7b0ffa8423e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 6492627234028021748, guid: 4cc3cb9b736c9c742b4fb29eb99d0055, type: 3}
+  delayMin: 1
+  delayMax: 5
 --- !u!1 &688940473609841548
 GameObject:
   m_ObjectHideFlags: 0

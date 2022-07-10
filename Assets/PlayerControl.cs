@@ -16,6 +16,7 @@ public class PlayerControl : MonoBehaviour
     float stepSpeed = 300;
     float jumpPower = 10;
     float kickPower = 100;
+    //float upMult = 1f;
     float kickTime;
     float kickWait;
 
@@ -198,11 +199,29 @@ public class PlayerControl : MonoBehaviour
         RaycastHit hit;
         if(Physics.SphereCast(transform.position + transform.up, 0.25f, body.forward, out hit, 2f, kickLayers, QueryTriggerInteraction.Ignore))
         {
-            if(hit.collider.attachedRigidbody != null && !hit.collider.attachedRigidbody.isKinematic)
+            if(hit.collider.attachedRigidbody != null)// && !hit.collider.attachedRigidbody.isKinematic)
             {
-                Vector3 force = (hit.collider.attachedRigidbody.worldCenterOfMass - hit.point).normalized;
+                Rigidbody rb = hit.collider.attachedRigidbody;
+
+                PersonAI pai = hit.collider.GetComponentInParent<PersonAI>();
+                if(pai != null)
+                {
+                    pai.ActivateRagdoll(true);
+                    rb = pai.ragdoll[0];
+                }
+                else
+                {
+                    Pod pod = hit.collider.GetComponentInParent<Pod>();
+                    if(pod != null)
+                        pod.Fall();
+                }
+
+                Vector3 force = rb.worldCenterOfMass - hit.point;
+                force.y = Mathf.Max(0f, force.y);
+                force = force.normalized;
                 force *= kickPower * Mathf.Min(10f, kickTime);
-                hit.collider.attachedRigidbody.AddForceAtPosition(force, hit.point, ForceMode.Impulse);
+                //force += Vector3.up * upMult;
+                rb.AddForceAtPosition(force, hit.point, ForceMode.Impulse);
             }
         }
 

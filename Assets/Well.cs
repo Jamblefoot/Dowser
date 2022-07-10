@@ -118,44 +118,82 @@ public class Well : MonoBehaviour
     {
         pumping = true;
 
-        output = Random.Range(0,2);
+        float rand = Random.value;
+        if(rand <= 0.1f)
+        {
+            //nothing
+            output = 0;
+        }
+        else if(rand <= 0.5f)
+        {
+            //water
+            output = 1;
+        }
+        else if(rand <= 0.8f)
+        {
+            //oil
+            output = 2;
+        }
+        else
+        {
+            //monsters
+            output = 3;
+        }
 
         Material material = null;
 
         switch(output)
         {
-            case 0:
+            case 0: //nothing
+                break;
+            case 1: //water
                 material = GameControl.instance.waterMaterial;
                 break;
-            case 1:
+            case 2: //oil
                 material = GameControl.instance.oilMaterial;
+                break;
+            case 3: //monster
                 break;
         }
 
         liquid.GetComponent<ParticleSystemRenderer>().material = material;
 
-        //TODO make some initial gurgling noise
-        yield return new WaitForSeconds(Random.value * 5f);
+        yield return null;
 
-        if(liquid != null)
+        if(output != 0)
         {
-            var liquidEmission = liquid.emission;
-            richness = GameControl.instance.GetLiquidAmount(transform.position);
-            liquidEmission.rateOverTime = richness * 10;
-            liquid.Play();
-        }
+            //TODO make some initial gurgling noise
 
-        int lightLevel = Mathf.CeilToInt(richness * lights.Length);
-        for(int i = 0; i < lightLevel; i++)
+            yield return new WaitForSeconds(Random.value * 5f);
+
+            if(output != 3)
+            {
+            if(liquid != null)
+            {
+                var liquidEmission = liquid.emission;
+                richness = GameControl.instance.GetLiquidAmount(transform.position);
+                liquidEmission.rateOverTime = richness * 10;
+                liquid.Play();
+            }
+
+            int lightLevel = Mathf.CeilToInt(richness * lights.Length);
+            for(int i = 0; i < lightLevel; i++)
+            {
+                lights[i].material.EnableKeyword("_EMISSION");
+                lights[i].GetComponent<Light>().enabled = true;
+
+                ship.LaunchPodToPosition(transform.position);
+            }
+
+            Puddle pud = GetComponentInChildren<Puddle>();
+            pud.Grow(1 + richness * 4f, richness);
+            pud.GetComponent<MeshRenderer>().material = material;
+            }
+            else liquid.GetComponent<Spawner>().Spawn();
+        }
+        else
         {
-            lights[i].material.EnableKeyword("_EMISSION");
-            lights[i].GetComponent<Light>().enabled = true;
-
-            ship.LaunchPodToPosition(transform.position);
+            GetComponentInChildren<Connection>().enabled = false;
         }
-
-        Puddle pud = GetComponentInChildren<Puddle>();
-        pud.Grow(1 + richness * 4f, richness);
-        pud.GetComponent<MeshRenderer>().material = material;
     }
 }

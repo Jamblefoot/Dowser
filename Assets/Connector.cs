@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class Connector : MonoBehaviour
 {
-    Connection connection;
+    public Connection connection;
 
     Rigidbody rigid;
     //LineRenderer line;
@@ -15,6 +15,9 @@ public class Connector : MonoBehaviour
     [SerializeField] LayerMask connectLayer;
 
     public UnityEvent connectionEstablished;
+    public UnityEvent connectionBroken;
+
+    float lastDist;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,14 +41,15 @@ public class Connector : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         if(connection == null)
         {
-            if (rigid.velocity.sqrMagnitude < 0.5f)
+            if (rigid.velocity.sqrMagnitude < 0.05f)
                 LookForConnection();
             tube.localScale = new Vector3(1, 1, 0.1f);
             tube.localRotation = Quaternion.Euler(-90, 0, 0);
+            lastDist = 0;
         }
         else
         {
@@ -93,5 +97,24 @@ public class Connector : MonoBehaviour
                 Physics.IgnoreCollision(tubeCol, col, true);
             }
         }
+
+        Pod pod = GetComponentInParent<Pod>();
+        if(pod != null)
+        {
+            pod.rigid.isKinematic = true;
+            pod.rigid.Sleep();
+        }
+    }
+
+    public void BreakConnection()
+    {
+        if(connection == null) return;
+
+        Debug.Log("Should be breaking connection!");
+
+        connection.occupant = null;
+        connection.connectionLost.Invoke();
+        connection = null;
+        connectionBroken.Invoke();
     }
 }
