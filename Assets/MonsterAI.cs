@@ -16,6 +16,14 @@ public class MonsterAI : MonoBehaviour
     bool jumping;
 
     float lookRange = 100f;
+
+    [System.Serializable]
+    public class Piece
+    {
+        public Transform bone;
+        public GameObject limbPrefab;
+    }
+    public Piece[] pieces;
     // Start is called before the first frame update
     void Start()
     {
@@ -108,5 +116,20 @@ public class MonsterAI : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public void Burst()
+    {
+        foreach(Piece piece in pieces)
+        {
+            GameObject p = Instantiate(piece.limbPrefab, piece.bone.position, transform.rotation);
+            p.transform.localScale = transform.localScale;
+            Rigidbody rb = p.GetComponent<Rigidbody>();
+            if(rb != null)
+                rb.AddForce(rigid.velocity, ForceMode.Force);
+            Destroy(p, Random.Range(10f, 30f));
+            
+        }
+        Destroy(gameObject);
     }
 }

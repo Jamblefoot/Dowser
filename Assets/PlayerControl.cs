@@ -16,7 +16,7 @@ public class PlayerControl : MonoBehaviour
     float stepSpeed = 300;
     float jumpPower = 10;
     float kickPower = 100;
-    //float upMult = 1f;
+    float upMult = 4f;
     float kickTime;
     float kickWait;
 
@@ -28,6 +28,7 @@ public class PlayerControl : MonoBehaviour
     bool jumping;
 
     bool grounded;
+    Vector3 groundNormal;
 
     Transform groundAnchor;
 
@@ -133,6 +134,7 @@ public class PlayerControl : MonoBehaviour
             + Vector3.ProjectOnPlane(neck.right, Vector3.up).normalized * horizontal;
         move = move.normalized;
         move *= moveSpeed;
+        move = Vector3.ProjectOnPlane(move, groundNormal);
         //rigid.MovePosition(transform.position + move * Time.deltaTime * moveSpeed);
         float dot = Vector3.Dot(move, rigid.velocity);
         if(Vector3.ProjectOnPlane(rigid.velocity, Vector3.up).magnitude < moveSpeed)
@@ -164,6 +166,8 @@ public class PlayerControl : MonoBehaviour
             groundAnchor.position = hit.point;
             groundAnchor.rotation = Quaternion.identity;
             groundAnchor.parent = hit.collider.transform;
+
+            groundNormal = hit.normal;
         }
         else
         {
@@ -174,6 +178,8 @@ public class PlayerControl : MonoBehaviour
             groundAnchor.parent = transform;
             groundAnchor.localPosition = Vector3.zero;
             groundAnchor.rotation = Quaternion.identity;
+
+            groundNormal = Vector3.up;
         }
     }
 
@@ -216,12 +222,16 @@ public class PlayerControl : MonoBehaviour
                         pod.Fall();
                 }
 
-                Vector3 force = rb.worldCenterOfMass - hit.point;
-                force.y = Mathf.Max(0f, force.y);
+                Vector3 force = body.forward + (rb.worldCenterOfMass - hit.point).normalized;//rb.worldCenterOfMass - hit.point;
+                force.y = Mathf.Max(0f, force.y * upMult);
                 force = force.normalized;
                 force *= kickPower * Mathf.Min(10f, kickTime);
                 //force += Vector3.up * upMult;
                 rb.AddForceAtPosition(force, hit.point, ForceMode.Impulse);
+
+                MonsterAI mai = hit.collider.GetComponent<MonsterAI>();
+                if (mai != null)
+                    mai.Burst();
             }
         }
 

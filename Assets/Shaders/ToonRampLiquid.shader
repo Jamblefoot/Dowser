@@ -3,8 +3,12 @@
     Properties
     {
         _Color ("Color", Color) = (1,1,1,1)
-        _LiquidColor ("Liquid Color", Color) = (0.5,0.5,0.5,1)
+        _LiquidColor ("Liquid Color (water)", Color) = (0.5,0.5,0.5,1)
+        _OilColor ("Oil Color", Color) = (0,0,0,1)
+        _BioColor ("Bio Color", Color) = (1,0,0.2,1)
         _LiquidHeight ("Liquid Height", Range(-1, 1)) = 0
+        _OilHeight ("Oil Height", Range(0, 1)) = 0
+        _BioWeight ("Bio Weight", Range(0, 1)) = 0
         _HeightMult ("Height Mult", Float) = 1
         _RampTex ("Ramp Texture", 2D) = "white" {}
 
@@ -28,7 +32,11 @@
 
         float4 _Color;
         float4 _LiquidColor;
+        float4 _OilColor;
+        float4 _BioColor;
         float _LiquidHeight;
+        float _OilHeight;
+        float _BioWeight;
         float _HeightMult;
         sampler2D _RampTex;
 
@@ -58,7 +66,10 @@
         void surf (Input IN, inout SurfaceOutput o)
         {
             float3 localPos = IN.worldPos - mul(unity_ObjectToWorld, float4(0,0,0,1)).xyz;
-            o.Albedo = (localPos.y > _LiquidHeight * _HeightMult ? _Color.rgb : _LiquidColor.rgb) * tex2D(_MainTex, IN.uv_MainTex).rgb;
+            half4 liquidCol = lerp(_LiquidColor, _BioColor, _BioWeight);
+            float oilLevel = _LiquidHeight * _HeightMult - (_LiquidHeight + 1) * _OilHeight * _HeightMult;
+            half3 col = localPos.y > _LiquidHeight * _HeightMult ? _Color.rgb : localPos.y > oilLevel ? _OilColor.rgb : liquidCol.rgb;
+            o.Albedo = col * tex2D(_MainTex, IN.uv_MainTex).rgb;
             o.Normal = tex2D(_Bump, IN.uv_Bump).rgb;
         }
         ENDCG

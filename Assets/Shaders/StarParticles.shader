@@ -6,6 +6,9 @@ Properties {
     _TintColor ("Tint Color", Color) = (0.5,0.5,0.5,0.5)
     _MainTex ("Particle Texture", 2D) = "white" {}
     _InvFade ("Soft Particles Factor", Range(0.01,3.0)) = 1.0
+
+    _FadeDot ("Fade Dot", Range(-1.0, 1.0)) = 0.2
+    _Alpha ("Alpha", Range(0.0, 1.0)) = 1.0
 }
 
 Category {
@@ -51,6 +54,9 @@ Category {
                 #ifdef SOFTPARTICLES_ON
                 float4 projPos : TEXCOORD2;
                 #endif
+
+                float3 viewDir :TEXCOORD3;
+
                 UNITY_VERTEX_OUTPUT_STEREO
             };
 
@@ -69,11 +75,18 @@ Category {
                 o.color = v.color * _TintColor;
                 o.texcoord = TRANSFORM_TEX(v.texcoord,_MainTex);
                 UNITY_TRANSFER_FOG(o,o.vertex);
+
+                //o.worldPos = mul(unity_ObjectToWorld, v.vertex);
+                o.viewDir = WorldSpaceViewDir(v.vertex);
+
                 return o;
             }
 
             UNITY_DECLARE_DEPTH_TEXTURE(_CameraDepthTexture);
             float _InvFade;
+
+            float _Alpha;
+            float _FadeDot;
 
             fixed4 frag (v2f i) : SV_Target
             {
@@ -85,7 +98,10 @@ Category {
                 #endif
 
                 fixed4 col = 2.0f * i.color * tex2D(_MainTex, i.texcoord);
-                col.a = saturate(col.a); // alpha should not have double-brightness applied to it, but we can't fix that legacy behavior without breaking everyone's effects, so instead clamp the output to get sensible HDR behavior (case 967476)
+                //col.a = saturate(col.a); // alpha should not have double-brightness applied to it, but we can't fix that legacy behavior without breaking everyone's effects, so instead clamp the output to get sensible HDR behavior (case 967476)
+
+                float d = dot(float3(0,-1,0), i.viewDir);
+                col.a = saturate(col.a) * _Alpha * (d < _FadeDot ? 0 : saturate((d - _FadeDot) * 10));
 
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;

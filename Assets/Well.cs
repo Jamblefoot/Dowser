@@ -166,30 +166,43 @@ public class Well : MonoBehaviour
 
             yield return new WaitForSeconds(Random.value * 5f);
 
+            richness = GameControl.instance.GetLiquidAmount(transform.position);
+
             if(output != 3)
             {
-            if(liquid != null)
-            {
-                var liquidEmission = liquid.emission;
-                richness = GameControl.instance.GetLiquidAmount(transform.position);
-                liquidEmission.rateOverTime = richness * 10;
-                liquid.Play();
-            }
+                if(liquid != null && liquid.gameObject.activeSelf)
+                {
+                    var liquidEmission = liquid.emission;
+                    liquidEmission.rateOverTime = richness * 10;
+                    liquid.Play();
+                }
 
-            int lightLevel = Mathf.CeilToInt(richness * lights.Length);
-            for(int i = 0; i < lightLevel; i++)
+                int lightLevel = Mathf.CeilToInt(richness * lights.Length);
+                for(int i = 0; i < lightLevel; i++)
+                {
+                    lights[i].material.EnableKeyword("_EMISSION");
+                    lights[i].GetComponent<Light>().enabled = true;
+
+                    ship.LaunchPodToPosition(transform.position);
+                }
+
+                Puddle pud = GetComponentInChildren<Puddle>();
+                pud.Grow(1 + richness * 4f, richness);
+                pud.GetComponent<MeshRenderer>().material = material;
+            }
+            else 
             {
-                lights[i].material.EnableKeyword("_EMISSION");
-                lights[i].GetComponent<Light>().enabled = true;
+                if(liquid != null && liquid.gameObject.activeSelf)
+                    liquid.GetComponent<Spawner>().Spawn();
+                lights[0].material.EnableKeyword("_EMISSION");
+                lights[0].GetComponent<Light>().enabled = true;
 
                 ship.LaunchPodToPosition(transform.position);
             }
 
-            Puddle pud = GetComponentInChildren<Puddle>();
-            pud.Grow(1 + richness * 4f, richness);
-            pud.GetComponent<MeshRenderer>().material = material;
-            }
-            else liquid.GetComponent<Spawner>().Spawn();
+            Connection con = GetComponentInChildren<Connection>();
+            con.flow = richness * 20;
+            con.liquidType = output - 1;
         }
         else
         {

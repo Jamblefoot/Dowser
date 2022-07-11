@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.40229043, g: 0.58480215, b: 0.81737006, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4998,13 +4998,13 @@ Terrain:
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: 0c38fbc1b00bb7d449966fca7c875be3, type: 2}
   m_TreeDistance: 5000
-  m_TreeBillboardDistance: 50
+  m_TreeBillboardDistance: 1000
   m_TreeCrossFadeLength: 5
-  m_TreeMaximumFullLODCount: 50
+  m_TreeMaximumFullLODCount: 1000
   m_DetailObjectDistance: 80
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 5
-  m_SplatMapDistance: 1000
+  m_SplatMapDistance: 2000
   m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
@@ -10051,13 +10051,13 @@ Terrain:
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: e35730e3aeef0d844bf0363b9f46929a, type: 2}
   m_TreeDistance: 5000
-  m_TreeBillboardDistance: 50
+  m_TreeBillboardDistance: 1000
   m_TreeCrossFadeLength: 5
-  m_TreeMaximumFullLODCount: 50
+  m_TreeMaximumFullLODCount: 1000
   m_DetailObjectDistance: 80
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 5
-  m_SplatMapDistance: 1000
+  m_SplatMapDistance: 2000
   m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
@@ -10117,7 +10117,7 @@ TerrainCollider:
   m_Material: {fileID: 0}
   m_Enabled: 1
   m_TerrainData: {fileID: 15600000, guid: 134da860a406af444989fe096ff88207, type: 2}
-  m_EnableTreeColliders: 1
+  m_EnableTreeColliders: 0
 --- !u!218 &96777423
 Terrain:
   m_ObjectHideFlags: 0
@@ -10140,7 +10140,7 @@ Terrain:
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
   m_DrawInstanced: 0
-  m_DrawTreesAndFoliage: 1
+  m_DrawTreesAndFoliage: 0
   m_ReflectionProbeUsage: 1
   m_MaterialTemplate: {fileID: 2100000, guid: 13438c426b8411848a64bafd01cee8f9, type: 2}
   m_BakeLightProbesForTrees: 1
@@ -10256,7 +10256,7 @@ TerrainCollider:
   m_Material: {fileID: 0}
   m_Enabled: 1
   m_TerrainData: {fileID: 15600000, guid: 3fa6e273174913e4695358c789dd682c, type: 2}
-  m_EnableTreeColliders: 1
+  m_EnableTreeColliders: 0
 --- !u!218 &264145548
 Terrain:
   m_ObjectHideFlags: 0
@@ -10279,7 +10279,7 @@ Terrain:
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
   m_DrawInstanced: 0
-  m_DrawTreesAndFoliage: 1
+  m_DrawTreesAndFoliage: 0
   m_ReflectionProbeUsage: 1
   m_MaterialTemplate: {fileID: 2100000, guid: 13438c426b8411848a64bafd01cee8f9, type: 2}
   m_BakeLightProbesForTrees: 1
@@ -10332,7 +10332,7 @@ TerrainCollider:
   m_Material: {fileID: 0}
   m_Enabled: 1
   m_TerrainData: {fileID: 15600000, guid: e9066d3a6e8425947b3af4fb66c959b1, type: 2}
-  m_EnableTreeColliders: 1
+  m_EnableTreeColliders: 0
 --- !u!218 &336841368
 Terrain:
   m_ObjectHideFlags: 0
@@ -10355,7 +10355,7 @@ Terrain:
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
   m_DrawInstanced: 0
-  m_DrawTreesAndFoliage: 1
+  m_DrawTreesAndFoliage: 0
   m_ReflectionProbeUsage: 1
   m_MaterialTemplate: {fileID: 2100000, guid: 13438c426b8411848a64bafd01cee8f9, type: 2}
   m_BakeLightProbesForTrees: 1
@@ -10406,13 +10406,13 @@ Terrain:
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: e9066d3a6e8425947b3af4fb66c959b1, type: 2}
   m_TreeDistance: 5000
-  m_TreeBillboardDistance: 50
+  m_TreeBillboardDistance: 1000
   m_TreeCrossFadeLength: 5
-  m_TreeMaximumFullLODCount: 50
+  m_TreeMaximumFullLODCount: 1000
   m_DetailObjectDistance: 80
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 5
-  m_SplatMapDistance: 1000
+  m_SplatMapDistance: 2000
   m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
@@ -20240,7 +20240,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.8130001, z: 0}
+  m_LocalPosition: {x: 0, y: 61, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -20286,13 +20286,13 @@ Terrain:
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: 3fa6e273174913e4695358c789dd682c, type: 2}
   m_TreeDistance: 5000
-  m_TreeBillboardDistance: 50
+  m_TreeBillboardDistance: 1000
   m_TreeCrossFadeLength: 5
-  m_TreeMaximumFullLODCount: 50
+  m_TreeMaximumFullLODCount: 1000
   m_DetailObjectDistance: 80
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 5
-  m_SplatMapDistance: 1000
+  m_SplatMapDistance: 2000
   m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
@@ -20366,7 +20366,7 @@ TerrainCollider:
   m_Material: {fileID: 0}
   m_Enabled: 1
   m_TerrainData: {fileID: 15600000, guid: a30cadca3bea3fc4091889a1b7e93f79, type: 2}
-  m_EnableTreeColliders: 1
+  m_EnableTreeColliders: 0
 --- !u!218 &1070867217
 Terrain:
   m_ObjectHideFlags: 0
@@ -20389,7 +20389,7 @@ Terrain:
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
   m_DrawInstanced: 0
-  m_DrawTreesAndFoliage: 1
+  m_DrawTreesAndFoliage: 0
   m_ReflectionProbeUsage: 1
   m_MaterialTemplate: {fileID: 2100000, guid: 13438c426b8411848a64bafd01cee8f9, type: 2}
   m_BakeLightProbesForTrees: 1
@@ -20442,7 +20442,7 @@ TerrainCollider:
   m_Material: {fileID: 0}
   m_Enabled: 1
   m_TerrainData: {fileID: 15600000, guid: 6af41494d05db064fbab4f3ee2c05341, type: 2}
-  m_EnableTreeColliders: 1
+  m_EnableTreeColliders: 0
 --- !u!218 &1186919627
 Terrain:
   m_ObjectHideFlags: 0
@@ -20465,7 +20465,7 @@ Terrain:
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
   m_DrawInstanced: 0
-  m_DrawTreesAndFoliage: 1
+  m_DrawTreesAndFoliage: 0
   m_ReflectionProbeUsage: 1
   m_MaterialTemplate: {fileID: 2100000, guid: 13438c426b8411848a64bafd01cee8f9, type: 2}
   m_BakeLightProbesForTrees: 1
@@ -30521,13 +30521,13 @@ Terrain:
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: 6af41494d05db064fbab4f3ee2c05341, type: 2}
   m_TreeDistance: 5000
-  m_TreeBillboardDistance: 50
+  m_TreeBillboardDistance: 1000
   m_TreeCrossFadeLength: 5
-  m_TreeMaximumFullLODCount: 50
+  m_TreeMaximumFullLODCount: 1000
   m_DetailObjectDistance: 80
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 5
-  m_SplatMapDistance: 1000
+  m_SplatMapDistance: 2000
   m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
@@ -30599,13 +30599,13 @@ Terrain:
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: 8d53786b174f52449a5aeda95bfeb46c, type: 2}
   m_TreeDistance: 5000
-  m_TreeBillboardDistance: 50
+  m_TreeBillboardDistance: 1000
   m_TreeCrossFadeLength: 5
-  m_TreeMaximumFullLODCount: 50
+  m_TreeMaximumFullLODCount: 1000
   m_DetailObjectDistance: 80
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 5
-  m_SplatMapDistance: 1000
+  m_SplatMapDistance: 2000
   m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
@@ -30679,7 +30679,7 @@ TerrainCollider:
   m_Material: {fileID: 0}
   m_Enabled: 1
   m_TerrainData: {fileID: 15600000, guid: 0c38fbc1b00bb7d449966fca7c875be3, type: 2}
-  m_EnableTreeColliders: 1
+  m_EnableTreeColliders: 0
 --- !u!218 &1645767092
 Terrain:
   m_ObjectHideFlags: 0
@@ -30702,7 +30702,7 @@ Terrain:
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
   m_DrawInstanced: 0
-  m_DrawTreesAndFoliage: 1
+  m_DrawTreesAndFoliage: 0
   m_ReflectionProbeUsage: 1
   m_MaterialTemplate: {fileID: 2100000, guid: 13438c426b8411848a64bafd01cee8f9, type: 2}
   m_BakeLightProbesForTrees: 1
@@ -30755,7 +30755,7 @@ TerrainCollider:
   m_Material: {fileID: 0}
   m_Enabled: 1
   m_TerrainData: {fileID: 15600000, guid: 8d53786b174f52449a5aeda95bfeb46c, type: 2}
-  m_EnableTreeColliders: 1
+  m_EnableTreeColliders: 0
 --- !u!218 &1721180846
 Terrain:
   m_ObjectHideFlags: 0
@@ -30778,7 +30778,7 @@ Terrain:
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
   m_DrawInstanced: 0
-  m_DrawTreesAndFoliage: 1
+  m_DrawTreesAndFoliage: 0
   m_ReflectionProbeUsage: 1
   m_MaterialTemplate: {fileID: 2100000, guid: 13438c426b8411848a64bafd01cee8f9, type: 2}
   m_BakeLightProbesForTrees: 1
@@ -30789,101 +30789,6 @@ Terrain:
   m_GroupingID: 0
   m_RenderingLayerMask: 1
   m_AllowAutoConnect: 1
---- !u!1 &1730476130
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1730476131}
-  - component: {fileID: 1730476134}
-  - component: {fileID: 1730476133}
-  - component: {fileID: 1730476132}
-  m_Layer: 8
-  m_Name: north pole
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1730476131
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1730476130}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 500, y: 0, z: 500}
-  m_LocalScale: {x: 1, y: 452.87, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1937903648}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1730476132
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1730476130}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &1730476133
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1730476130}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 0c2ac7a1d818ae34fa7b282372ded398, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1730476134
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1730476130}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1740392329
 GameObject:
   m_ObjectHideFlags: 0
@@ -40735,13 +40640,13 @@ Terrain:
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: a30cadca3bea3fc4091889a1b7e93f79, type: 2}
   m_TreeDistance: 5000
-  m_TreeBillboardDistance: 50
+  m_TreeBillboardDistance: 1000
   m_TreeCrossFadeLength: 5
-  m_TreeMaximumFullLODCount: 50
+  m_TreeMaximumFullLODCount: 1000
   m_DetailObjectDistance: 80
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 5
-  m_SplatMapDistance: 1000
+  m_SplatMapDistance: 2000
   m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
@@ -45619,7 +45524,6 @@ GameObject:
   - component: {fileID: 1937903648}
   - component: {fileID: 1937903647}
   - component: {fileID: 1937903646}
-  - component: {fileID: 1937903649}
   m_Layer: 8
   m_Name: Terrain
   m_TagString: Terrain
@@ -45649,13 +45553,13 @@ Terrain:
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: 134da860a406af444989fe096ff88207, type: 2}
   m_TreeDistance: 5000
-  m_TreeBillboardDistance: 50
+  m_TreeBillboardDistance: 1000
   m_TreeCrossFadeLength: 5
-  m_TreeMaximumFullLODCount: 50
+  m_TreeMaximumFullLODCount: 1000
   m_DetailObjectDistance: 80
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 5
-  m_SplatMapDistance: 1000
+  m_SplatMapDistance: 2000
   m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
@@ -45684,96 +45588,9 @@ Transform:
   m_Children:
   - {fileID: 96777424}
   - {fileID: 1801500350}
-  - {fileID: 1730476131}
   m_Father: {fileID: 1558924625}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1937903649
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1937903645}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e7658eaa668d8d4d90c82f8a3ee9edf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resetTerrain: 1
-  resetHeight: 0
-  randomHeightRange: {x: 0, y: 0.1}
-  heightmapImage: {fileID: 0}
-  heightmapScale: {x: 1, y: 1, z: 1}
-  perlinXScale: 0.01
-  perlinYScale: 0.01
-  perlinOffsetX: 0
-  perlinOffsetY: 0
-  perlinOctaves: 3
-  perlinPersistence: 8
-  perlinHeightScale: 0.09
-  perlinParameters:
-  - mPerlinXScale: 0.01
-    mPerlinYScale: 0.01
-    mPerlinOctaves: 3
-    mPerlinPersistence: 8
-    mPerlinHeightScale: 0.09
-    mPerlinOffsetX: 0
-    mPerlinOffsetY: 0
-    remove: 0
-  vPeakCount: 0
-  vFalloff: 0.2
-  vDropoff: 0.7
-  vMinHeight: 0.01
-  vMaxHeight: 1
-  voronoiType: 1
-  craterCount: 1
-  craterFalloff: 0.1
-  craterDropoff: 1.15
-  craterDepthMin: 0.001
-  craterDepthMax: 0.1
-  mpdHeightMin: -5
-  mpdHeightMax: 5
-  mpdHeightDampPower: 2
-  mpdRoughness: 2
-  smoothAmount: 1
-  splatHeights:
-  - texture: {fileID: 0}
-    tileOffset: {x: 0, y: 0}
-    tileSize: {x: 1, y: 1}
-    minHeight: 0.1
-    maxHeight: 0.2
-    minSlope: 0
-    maxSlope: 1.5
-    noiseXScale: 0.01
-    noiseYScale: 0.01
-    noiseScaler: 0.1
-    splatOffset: 0.01
-    remove: 0
-  maxTrees: 1000
-  treeSpacing: 5
-  vegetation:
-  - prefab: {fileID: 0}
-    minHeight: 0.1
-    maxHeight: 0.2
-    minSlope: 0
-    maxSlope: 90
-    minScaleHeight: 0.5
-    maxScaleHeight: 2
-    lockWidthToHeight: 0
-    minScaleWidth: 0.5
-    maxScaleWidth: 2
-    color1: {r: 1, g: 1, b: 1, a: 1}
-    color2: {r: 1, g: 1, b: 1, a: 1}
-    lightColor: {r: 1, g: 1, b: 1, a: 1}
-    minRotation: 0
-    maxRotation: 360
-    density: 0.5
-    remove: 0
-  undo: 0
-  terrain: {fileID: 1937903647}
-  terrainData: {fileID: 15600000, guid: 134da860a406af444989fe096ff88207, type: 2}
-  terrainLayer: 8
 --- !u!1 &1956894735
 GameObject:
   m_ObjectHideFlags: 0
@@ -45816,7 +45633,7 @@ TerrainCollider:
   m_Material: {fileID: 0}
   m_Enabled: 1
   m_TerrainData: {fileID: 15600000, guid: feac1d19c36801e428b5977d9aae4b4f, type: 2}
-  m_EnableTreeColliders: 1
+  m_EnableTreeColliders: 0
 --- !u!218 &1956894738
 Terrain:
   m_ObjectHideFlags: 0
@@ -45839,7 +45656,7 @@ Terrain:
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
   m_DrawInstanced: 0
-  m_DrawTreesAndFoliage: 1
+  m_DrawTreesAndFoliage: 0
   m_ReflectionProbeUsage: 1
   m_MaterialTemplate: {fileID: 2100000, guid: 13438c426b8411848a64bafd01cee8f9, type: 2}
   m_BakeLightProbesForTrees: 1
@@ -46037,13 +45854,13 @@ Terrain:
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: feac1d19c36801e428b5977d9aae4b4f, type: 2}
   m_TreeDistance: 5000
-  m_TreeBillboardDistance: 50
+  m_TreeBillboardDistance: 1000
   m_TreeCrossFadeLength: 5
-  m_TreeMaximumFullLODCount: 50
+  m_TreeMaximumFullLODCount: 1000
   m_DetailObjectDistance: 80
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 5
-  m_SplatMapDistance: 1000
+  m_SplatMapDistance: 2000
   m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
@@ -46117,7 +45934,7 @@ TerrainCollider:
   m_Material: {fileID: 0}
   m_Enabled: 1
   m_TerrainData: {fileID: 15600000, guid: e35730e3aeef0d844bf0363b9f46929a, type: 2}
-  m_EnableTreeColliders: 1
+  m_EnableTreeColliders: 0
 --- !u!218 &2147468576
 Terrain:
   m_ObjectHideFlags: 0
@@ -46140,7 +45957,7 @@ Terrain:
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
   m_DrawInstanced: 0
-  m_DrawTreesAndFoliage: 1
+  m_DrawTreesAndFoliage: 0
   m_ReflectionProbeUsage: 1
   m_MaterialTemplate: {fileID: 2100000, guid: 13438c426b8411848a64bafd01cee8f9, type: 2}
   m_BakeLightProbesForTrees: 1

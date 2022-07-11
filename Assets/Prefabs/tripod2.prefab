@@ -368,6 +368,17 @@ MonoBehaviour:
   groundLayers:
     serializedVersion: 2
     m_Bits: 257
+  pieces:
+  - bone: {fileID: 4227526810339866853}
+    limbPrefab: {fileID: 6111912816003319603, guid: 46b3669ccdd8f064eb60f9bea0c28ebc, type: 3}
+  - bone: {fileID: 8657284664002074458}
+    limbPrefab: {fileID: 344154517449845110, guid: c1e2181b5750fad488eab4e32f46d049, type: 3}
+  - bone: {fileID: 7749331800307497668}
+    limbPrefab: {fileID: 4231287202956985653, guid: c24ef8e509f09994b88a472e5e5c068e, type: 3}
+  - bone: {fileID: 2703304987169656372}
+    limbPrefab: {fileID: 6883924188080779059, guid: 828dac8f0a284f2408b2a45a53f57a30, type: 3}
+  - bone: {fileID: 7664841674942241835}
+    limbPrefab: {fileID: 4326548462665927979, guid: f55bc03c19cfd164ea4c702307098238, type: 3}
 --- !u!135 &6492627234028021745
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LightAdjust : MonoBehaviour
 {
+    [SerializeField] Material starMaterial;
     //float intensity;
     public Light lite;
     Color color;
@@ -25,5 +26,6 @@ public class LightAdjust : MonoBehaviour
         //RenderSettings.ambientLight = lite.color;
 
         RenderSettings.skybox.SetFloat("_Exposure", lightAmount);
+        starMaterial.SetFloat("_Alpha", 1 - lightAmount);
     }
 }

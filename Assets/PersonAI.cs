@@ -80,11 +80,24 @@ public class PersonAI : MonoBehaviour
 
         ActivateRagdoll(false);
         anim.SetTrigger("getup");
+
+        //anim.CrossFade("Base Layer.getUp", 1f);
+        //anim.SetLayerWeight(0, 0);
+        //StartCoroutine(Recover());
         //rigid.isKinematic = false;
         ragdolling = false;
 
         
     }
+
+    /*IEnumerator Recover()
+    {
+        while(anim.GetLayerWeight(0) < 1)
+        {
+            anim.SetLayerWeight(0, anim.GetLayerWeight(0) + Time.deltaTime);
+            yield return null;
+        }
+    }*/
 
     void FollowRagdoll(List<Transform> children)
     {

@@ -268,6 +268,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   root: {fileID: 8922657228649463022}
+  flow: 10
+  liquidType: 0
 --- !u!135 &8982913101666593550
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -614,7 +616,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 424100b2d6be82e459c8109ec3e48f16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  podRenderer: {fileID: 2276730145494509823}
+  windowMaterialIndex: 0
   rigid: {fileID: 0}
+  fill: 0
+  contents: 0
+  waterAmount: 0
+  oilAmount: 0
+  bioAmount: 0
 --- !u!1001 &4915556499043591783
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -790,6 +799,11 @@ PrefabInstance:
 --- !u!4 &6793261902216523622 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0ee0e8492538b4448bddde9e5a061815, type: 3}
+  m_PrefabInstance: {fileID: 6470611396591749261}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2276730145494509823 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5067861064070045810, guid: 0ee0e8492538b4448bddde9e5a061815, type: 3}
   m_PrefabInstance: {fileID: 6470611396591749261}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &3454494722637582471 stripped

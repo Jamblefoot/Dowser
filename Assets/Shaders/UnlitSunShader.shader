@@ -22,7 +22,7 @@ SubShader {
     Stencil
         {
             Ref 1
-            Comp Less
+            Comp Greater
             Pass Replace
         }
 

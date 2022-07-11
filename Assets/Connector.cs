@@ -18,11 +18,16 @@ public class Connector : MonoBehaviour
     public UnityEvent connectionBroken;
 
     float lastDist;
+
+    Pod pod;
+
+    bool blockConnect;
     // Start is called before the first frame update
     void Start()
     {
         rigid = GetComponentInParent<Rigidbody>();
         //line = GetComponentInChildren<LineRenderer>();
+        pod = GetComponentInParent<Pod>();
 
         if(tube != null)
         {
@@ -37,6 +42,7 @@ public class Connector : MonoBehaviour
         if(connection == null)
         {
             tube.gameObject.SetActive(false);
+            StartCoroutine(ConnectDelay());
         }
     }
 
@@ -45,7 +51,7 @@ public class Connector : MonoBehaviour
     {
         if(connection == null)
         {
-            if (rigid.velocity.sqrMagnitude < 0.05f)
+            if (rigid.velocity.sqrMagnitude < 0.05f && !blockConnect)
                 LookForConnection();
             tube.localScale = new Vector3(1, 1, 0.1f);
             tube.localRotation = Quaternion.Euler(-90, 0, 0);
@@ -58,6 +64,16 @@ public class Connector : MonoBehaviour
             //line.positionCount = 2;
             //line.SetPosition(0, Vector3.zero);
             //line.SetPosition(1, transform.InverseTransformPoint(connection.transform.position));
+
+            if(pod != null)
+            {
+                int lt = connection.GetLiquidType();
+                if(lt != -1)
+                {
+                    if(pod.AddLiquid(connection.flow * Time.deltaTime, lt))
+                        connection.WithdrawLiquid(connection.flow * Time.deltaTime, lt);
+                }
+            }
         }
     }
 
@@ -116,5 +132,14 @@ public class Connector : MonoBehaviour
         connection.connectionLost.Invoke();
         connection = null;
         connectionBroken.Invoke();
+
+        StartCoroutine(ConnectDelay());
+    }
+
+    IEnumerator ConnectDelay()
+    {
+        blockConnect = true;
+        yield return new WaitForSeconds(5);
+        blockConnect = false;
     }
 }
