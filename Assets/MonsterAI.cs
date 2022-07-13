@@ -15,6 +15,9 @@ public class MonsterAI : MonoBehaviour
     float moveSpeed = 10;
     bool jumping;
 
+    bool lookingForTarget;
+    bool attacking;
+
     float lookRange = 100f;
 
     [System.Serializable]
@@ -24,11 +27,15 @@ public class MonsterAI : MonoBehaviour
         public GameObject limbPrefab;
     }
     public Piece[] pieces;
+
+    Transform tran;
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody>();
+
+        tran = transform;
     }
 
     // Update is called once per frame
@@ -38,19 +45,35 @@ public class MonsterAI : MonoBehaviour
 
         if(target != null)
         {
-            transform.LookAt(target, Vector3.up);
-            float dist = Vector3.Distance(transform.position, target.position);
-            if(dist > 1f && grounded)
+            tran.LookAt(target, Vector3.up);
+            float dist = Vector3.Distance(tran.position, target.position);
+            if(dist > 2.1f)
             {
-                if(!jumping)
+                if(grounded && !jumping)
                 {
                     if(Random.value > 0.99f)
                         StartCoroutine(JumpCo(target.position));
                     else MoveTowardPosition(target.position);
                 }
             }
+            else
+            {
+                if(!attacking)
+                {
+                    StartCoroutine(Attack());
+                }
+            }
         }
-        else LookForTarget();
+        else
+        {
+            if(!lookingForTarget)
+                StartCoroutine(LookForTarget());
+        } 
+
+        if((GameControl.instance.player.transform.position - tran.position).sqrMagnitude > 500 * 500 && target == null)
+        {
+            Destroy(gameObject);
+        }
     }
 
     void MoveTowardPosition(Vector3 pos)
@@ -105,17 +128,26 @@ public class MonsterAI : MonoBehaviour
         StopAllCoroutines();
     }
 
-    void LookForTarget()
+    IEnumerator LookForTarget()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, lookRange, targetLayers, QueryTriggerInteraction.Collide);
-        foreach(Collider col in hitColliders)
+        lookingForTarget = true;
+        while(target == null)
         {
-            if(col.GetComponent<PlayerControl>())
+            Collider[] hitColliders = new Collider[10];
+            int numOfColliders = Physics.OverlapSphereNonAlloc(transform.position, lookRange, hitColliders, targetLayers, QueryTriggerInteraction.Collide);
+            for(int i = 0; i < numOfColliders; i++)
             {
-                target = col.transform;
-                break;
+                if(hitColliders[i].GetComponent<PlayerControl>() || hitColliders[i].GetComponent<PersonAI>())
+                {
+                    target = hitColliders[i].transform;
+                    break;
+                }
             }
+
+            yield return new WaitForSeconds(Random.Range(1f, 5f));
         }
+
+        lookingForTarget = false;
     }
 
     public void Burst()
@@ -131,5 +163,24 @@ public class MonsterAI : MonoBehaviour
             
         }
         Destroy(gameObject);
+    }
+
+    IEnumerator Attack()
+    {
+        attacking = true;
+        
+        PersonAI pai= target.GetComponentInParent<PersonAI>();
+        if(pai != null)
+        {
+            pai.ActivateRagdoll(true);
+            //TAKE HEALTH
+        }
+        else //at this point else is the player
+        {
+            target.GetComponent<PlayerControl>().TakeDamage(Random.Range(3,8), tran.position);
+        }
+        yield return new WaitForSeconds(1f);
+
+        attacking = false;
     }
 }

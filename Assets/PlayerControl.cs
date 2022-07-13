@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
 {
+    [SerializeField] HurtUI hurtUI;
+
     [SerializeField] Transform neck;
     [SerializeField] Transform body;
     [SerializeField] Transform legLeft;
@@ -35,10 +37,20 @@ public class PlayerControl : MonoBehaviour
     int leftStep = 1;
     float legRot = 0;
     bool stepSwitch;
+
+    public Transform tran;
+
+    float health = 100f;
+
+    void Awake()
+    {
+        tran = transform;
+    }
     // Start is called before the first frame update
     void Start()
     {
         rigid = GetComponent<Rigidbody>();
+        
     }
 
     // Update is called once per frame
@@ -50,7 +62,7 @@ public class PlayerControl : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X");
         //float mouseY = Input.GetAxis("Mouse Y");
         headXRot -= Input.GetAxis("Mouse Y");
-        headXRot = Mathf.Clamp(headXRot, -80f, 80f);
+        headXRot = Mathf.Clamp(headXRot, -80f, 70f);
 
         neck.localRotation = Quaternion.Euler(headXRot, neck.localRotation.eulerAngles.y, 0)
                             * Quaternion.Euler(0, mouseX, 0);
@@ -120,7 +132,7 @@ public class PlayerControl : MonoBehaviour
     {
         jumping = true;
         yield return new WaitForFixedUpdate();
-        rigid.AddForce(transform.up * rigid.mass * jumpPower, ForceMode.Impulse);
+        rigid.AddForce(tran.up * rigid.mass * jumpPower, ForceMode.Impulse);
         jumping = false;
     }
 
@@ -157,7 +169,7 @@ public class PlayerControl : MonoBehaviour
     void CheckGround()
     {
         RaycastHit hit;
-        if(Physics.Raycast(transform.position + transform.up * 0.1f, -transform.up, out hit, 0.2f, groundLayers, QueryTriggerInteraction.Ignore))
+        if(Physics.SphereCast(tran.position + tran.up * 0.4f, 0.3f, -tran.up, out hit, 0.2f, groundLayers, QueryTriggerInteraction.Ignore))
         {
             grounded = true;
 
@@ -175,7 +187,7 @@ public class PlayerControl : MonoBehaviour
 
             if(groundAnchor == null)
                 groundAnchor = new GameObject("player ground anchor").transform;
-            groundAnchor.parent = transform;
+            groundAnchor.parent = tran;
             groundAnchor.localPosition = Vector3.zero;
             groundAnchor.rotation = Quaternion.identity;
 
@@ -203,7 +215,7 @@ public class PlayerControl : MonoBehaviour
 
 
         RaycastHit hit;
-        if(Physics.SphereCast(transform.position + transform.up, 0.25f, body.forward, out hit, 2f, kickLayers, QueryTriggerInteraction.Ignore))
+        if(Physics.SphereCast(tran.position + tran.up, 0.25f, body.forward, out hit, 2f, kickLayers, QueryTriggerInteraction.Ignore))
         {
             if(hit.collider.attachedRigidbody != null)// && !hit.collider.attachedRigidbody.isKinematic)
             {
@@ -235,5 +247,22 @@ public class PlayerControl : MonoBehaviour
             }
         }
 
+    }
+
+    public void TakeDamage(float amount, Vector3 fromPos)
+    {
+        health -= amount;
+        //if(health <= 0) Die();
+
+        //SHOW SLASH ON SCREEN IN DIRECTION OF fromPos
+        if(hurtUI != null)
+        {
+            Vector3 hitVector = fromPos - tran.position;
+            float frontDot = Vector3.Dot(-neck.forward, hitVector);
+            float sideDot = Vector3.Dot(neck.right, hitVector) + 1f;
+            float upDot = Vector3.Dot(neck.up, hitVector) + 1f;
+            Vector2 slashPos = new Vector2(sideDot, upDot);
+            hurtUI.SlashAtPosition(slashPos);
+        }
     }
 }

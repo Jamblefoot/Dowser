@@ -10,6 +10,7 @@ public class Connector : MonoBehaviour
     Rigidbody rigid;
     //LineRenderer line;
     public Transform tube;
+    MeshRenderer tubeRend;
 
     float searchDistance = 15;
     [SerializeField] LayerMask connectLayer;
@@ -37,6 +38,8 @@ public class Connector : MonoBehaviour
                 if(col != tubeCol)
                     Physics.IgnoreCollision(col, tubeCol, true);
             }
+
+            tubeRend = tube.GetComponentInChildren<MeshRenderer>();
         }
 
         if(connection == null)
@@ -47,7 +50,7 @@ public class Connector : MonoBehaviour
     }
 
     // Update is called once per frame
-    void LateUpdate()
+    void FixedUpdate()
     {
         if(connection == null)
         {
@@ -71,7 +74,11 @@ public class Connector : MonoBehaviour
                 if(lt != -1)
                 {
                     if(pod.AddLiquid(connection.flow * Time.deltaTime, lt))
+                    {
                         connection.WithdrawLiquid(connection.flow * Time.deltaTime, lt);
+                        tubeRend.material.color = lt == 0 ? Color.blue : lt == 1 ? Color.black : Color.red;
+                    }
+                    else tubeRend.material.color = Color.white;
                 }
             }
         }

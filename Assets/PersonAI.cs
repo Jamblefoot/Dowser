@@ -7,6 +7,9 @@ public class PersonAI : MonoBehaviour
     [SerializeField] Transform armature;
     [SerializeField] Transform head;
     [SerializeField] LayerMask groundLayers;
+    [SerializeField] LayerMask rockLayer;
+    float lookRange = 50f;
+    float moveSpeed = 5f;
 
     Animator anim;
     Rigidbody rigid;
@@ -17,10 +20,17 @@ public class PersonAI : MonoBehaviour
     bool ragdolling;
     bool grounded;
 
+    Transform target;
+
+    Transform tran;
+
+    bool lookingForTarget;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        tran = transform;
         anim = GetComponent<Animator>();
         capsule = GetComponent<CapsuleCollider>();
         capsuleInit = new Vector3(capsule.radius, capsule.center.y, capsule.height);
@@ -33,6 +43,38 @@ public class PersonAI : MonoBehaviour
     void FixedUpdate()
     {
         grounded = CheckGrounded();
+
+        if(ragdolling) return;
+
+        if(target != null)
+        {
+            tran.LookAt(target, Vector3.up);
+            float dist = Vector3.Distance(tran.position, target.position);
+            if (dist > 1f)
+            {
+                if (grounded)
+                {
+                    MoveTowardPosition(target.position);
+                }
+            }
+        }
+        else
+        {
+            if(!lookingForTarget)
+                StartCoroutine(LookForRock());
+        }
+    }
+
+    void MoveTowardPosition(Vector3 pos)
+    {
+        anim.SetBool("walking", true);
+
+        tran.LookAt(new Vector3(pos.x, tran.position.y, pos.z), Vector3.up);
+        if (grounded)
+        {
+            if (rigid.velocity.sqrMagnitude < moveSpeed * moveSpeed)
+                rigid.AddForce(tran.forward * moveSpeed, ForceMode.VelocityChange);
+        }
     }
 
     public void ActivateRagdoll(bool setting)
@@ -58,7 +100,7 @@ public class PersonAI : MonoBehaviour
         capsule.height = 1f;*/
 
         List<Transform> children = new List<Transform>();
-        foreach (Transform child in transform)
+        foreach (Transform child in tran)
         {
             children.Add(child);
         }
@@ -105,31 +147,49 @@ public class PersonAI : MonoBehaviour
         {
             child.parent = null;
         }
-        transform.position = ragdoll[0].position;
-        transform.LookAt(transform.position + Vector3.ProjectOnPlane(head.position - transform.position, Vector3.up).normalized);//transform.position + Vector3.ProjectOnPlane(ragdoll[0].transform.forward, Vector3.up).normalized);
+        tran.position = ragdoll[0].position;
+        tran.LookAt(tran.position + Vector3.ProjectOnPlane(head.position - tran.position, Vector3.up).normalized);//transform.position + Vector3.ProjectOnPlane(ragdoll[0].transform.forward, Vector3.up).normalized);
         foreach (Transform child in children)
         {
-            child.parent = transform;
+            child.parent = tran;
         }
     }
 
     bool CheckGrounded()
     {
         RaycastHit hit;
-        if(Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, out hit, Mathf.Infinity, groundLayers, QueryTriggerInteraction.Ignore))
+        if(Physics.Raycast(tran.position + Vector3.up * 0.1f, Vector3.down, out hit, Mathf.Infinity, groundLayers, QueryTriggerInteraction.Ignore))
         {
             if(hit.distance <= 0.2f)
                 return true;
         }
         else
         {
-            if(Physics.Raycast(transform.position + Vector3.up * 1000f, Vector3.down, out hit, 1000, groundLayers, QueryTriggerInteraction.Ignore))
+            if(Physics.Raycast(tran.position + Vector3.up * 1000f, Vector3.down, out hit, 1000, groundLayers, QueryTriggerInteraction.Ignore))
             {
-                transform.position = hit.point;
+                tran.position = hit.point;
+                Debug.Log("PersonAI was underground!");
                 return true;
             }
         }
 
         return false;
+    }
+
+    IEnumerator LookForRock()
+    {
+        lookingForTarget = true;
+        while(target == null)
+        {
+            Collider[] hitColliders = new Collider[5];
+            int numOfCols = Physics.OverlapSphereNonAlloc(tran.position, lookRange, hitColliders, rockLayer, QueryTriggerInteraction.Collide);
+            if(numOfCols > 0)
+            {
+                target = hitColliders[0].transform;
+            }
+
+            yield return new WaitForSeconds(Random.Range(2f, 10f));
+        }
+        lookingForTarget = false;
     }
 }

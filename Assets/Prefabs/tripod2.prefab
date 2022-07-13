@@ -291,6 +291,7 @@ GameObject:
   - component: {fileID: 6492627234028021750}
   - component: {fileID: 6492627234028021751}
   - component: {fileID: 6492627234028021745}
+  - component: {fileID: 6796516464585650482}
   m_Layer: 0
   m_Name: tripod2
   m_TagString: Untagged
@@ -364,7 +365,7 @@ MonoBehaviour:
   target: {fileID: 0}
   targetLayers:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 513
   groundLayers:
     serializedVersion: 2
     m_Bits: 257
@@ -392,6 +393,18 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1.5
   m_Center: {x: 0, y: 1.5, z: 0}
+--- !u!114 &6796516464585650482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6492627234028021748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e168032e46d535f4ba6589c839b88aea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7123049383369682979
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,6 +18,10 @@ public class Pod : MonoBehaviour
     public float waterAmount = 0;
     public float oilAmount = 0;
     public float bioAmount = 0;
+
+    [SerializeField] GameObject personPrefab;
+    PersonAI person;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -91,6 +95,9 @@ public class Pod : MonoBehaviour
 
         SetLiquidMaterial();
 
+        if(contents >= maxFill && person == null)
+            CreatePerson();
+
         return true;
     }
     public void SetLiquid(float amount, float oilPercent = 0, float bioPercent = 0)
@@ -109,5 +116,10 @@ public class Pod : MonoBehaviour
         mat.SetFloat("_LiquidHeight", fill * 2 - 1);
         mat.SetFloat("_OilHeight", oilAmount / contents);
         mat.SetFloat("_BioWeight", bioAmount / (bioAmount + waterAmount));
+    }
+
+    void CreatePerson()
+    {
+        person = Instantiate(personPrefab, transform.position, Quaternion.identity).GetComponent<PersonAI>();
     }
 }

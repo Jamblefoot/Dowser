@@ -551,6 +551,7 @@ GameObject:
   - component: {fileID: 2534092723366640729}
   - component: {fileID: 6859014930415110626}
   - component: {fileID: -5935484160214058878}
+  - component: {fileID: 8003965283440563646}
   m_Layer: 0
   m_Name: PodHab
   m_TagString: Untagged
@@ -624,6 +625,19 @@ MonoBehaviour:
   waterAmount: 0
   oilAmount: 0
   bioAmount: 0
+  personPrefab: {fileID: 5508948708770392700, guid: 868a5685ed1aac64c9fbd33c5fabb0ff, type: 3}
+--- !u!114 &8003965283440563646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8557360390780083621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e168032e46d535f4ba6589c839b88aea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4915556499043591783
 PrefabInstance:
   m_ObjectHideFlags: 0

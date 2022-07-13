@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/SampleScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
     path: Assets/NatureManufacture Assets/WorldStreamer/SplitScenes2/lod0Terrain/lod0Terrain_x-1_z-1.unity
     guid: 60147ea653624464b9bb7109516485ec
   - enabled: 1

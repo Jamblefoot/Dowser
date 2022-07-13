@@ -4,6 +4,7 @@ Shader "Custom/TerrainOutline"
     {
         _OutlineColor ("Outline Color", Color) = (0,0,0,1)
         _Outline ("Outline Width", Range(0.002, 1)) = 1
+        _DistanceDivisor ("Distance Divisor", Float) = 50
     }
     SubShader
     {
@@ -44,6 +45,7 @@ Shader "Custom/TerrainOutline"
 
             float _Outline;
             float4 _OutlineColor;
+            float _DistanceDivisor;
 
             v2f vert(appdata v)
             {
@@ -55,7 +57,9 @@ Shader "Custom/TerrainOutline"
                 //NOW PROJECT NORMAL ON VIEWING PLANE
                 float2 offset = TransformViewToProjection(norm.xy);
 
-                o.pos.xy += offset * o.pos.z * _Outline;
+                float dist = length(WorldSpaceViewDir(v.vertex));
+
+                o.pos.xy += offset * o.pos.z * _Outline * (1 + dist / _DistanceDivisor);
                 o.color = _OutlineColor;
                 return o;
             }

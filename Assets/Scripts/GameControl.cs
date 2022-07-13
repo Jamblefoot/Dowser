@@ -11,6 +11,8 @@ public class GameControl : MonoBehaviour
 
     public float time;
 
+    public PlayerControl player;
+
     WorldMover worldMover;
     Vector3 offset = new Vector3(1000f, 0f, 1000f);
     Vector3 planetMapDimensions = new Vector3(3000, 0, 3000);
@@ -21,6 +23,11 @@ public class GameControl : MonoBehaviour
 
     public Material waterMaterial;
     public Material oilMaterial;
+
+    public LayerMask groundLayers;
+
+    public GameObject monsterPrefab;
+    GameObject[] monsters = new GameObject[10];
 
     // Start is called before the first frame update
     void Awake()
@@ -35,6 +42,10 @@ public class GameControl : MonoBehaviour
     void Start()
     {
         worldMover = FindObjectOfType<WorldMover>();
+
+        player = FindObjectOfType<PlayerControl>();
+
+        StartCoroutine(SpawnMonster());
     }
 
     // Update is called once per frame
@@ -65,5 +76,31 @@ public class GameControl : MonoBehaviour
     {
         Vector3 mapPos = GetPlanetMapPos(pos);
         return Mathf.PerlinNoise(mapPos.x * liquidPerlinScale, mapPos.z * liquidPerlinScale);
+    }
+
+    IEnumerator SpawnMonster()
+    {
+        RaycastHit hit;
+        while(true)
+        {
+            int count = Random.Range(1, 6);
+            Vector3 pos = player.tran.position + new Vector3(Random.Range(50f, 400f), 0, Random.Range(50f, 400f));
+            if(Physics.Raycast(pos + Vector3.up * 1000, Vector3.down, out hit, Mathf.Infinity, groundLayers, QueryTriggerInteraction.Ignore))
+            {
+                pos = hit.point;
+            }
+            else yield return new WaitForSeconds(Random.Range(30f, 60f));
+            for(int i = 0; i < monsters.Length; i++)
+            {
+                if(count <= 0) break;
+                if(monsters[i] == null)
+                {
+                    monsters[i] = Instantiate(monsterPrefab, pos, Quaternion.identity);
+                    count -= 1;
+                }
+            }
+
+            yield return new WaitForSeconds(Random.Range(30f, 360f));
+        }
     }
 }
