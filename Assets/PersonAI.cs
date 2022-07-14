@@ -20,7 +20,8 @@ public class PersonAI : MonoBehaviour
     bool ragdolling;
     bool grounded;
 
-    Transform target;
+    Collider target;
+    Vector3 targetPos;
 
     Transform tran;
 
@@ -48,13 +49,13 @@ public class PersonAI : MonoBehaviour
 
         if(target != null)
         {
-            tran.LookAt(target, Vector3.up);
-            float dist = Vector3.Distance(tran.position, target.position);
+            tran.LookAt(targetPos, Vector3.up);
+            float dist = Vector3.Distance(tran.position, targetPos);
             if (dist > 1f)
             {
                 if (grounded)
                 {
-                    MoveTowardPosition(target.position);
+                    MoveTowardPosition(targetPos);
                 }
             }
         }
@@ -185,7 +186,8 @@ public class PersonAI : MonoBehaviour
             int numOfCols = Physics.OverlapSphereNonAlloc(tran.position, lookRange, hitColliders, rockLayer, QueryTriggerInteraction.Collide);
             if(numOfCols > 0)
             {
-                target = hitColliders[0].transform;
+                target = hitColliders[0];
+                targetPos = target.ClosestPoint(tran.position);
             }
 
             yield return new WaitForSeconds(Random.Range(2f, 10f));

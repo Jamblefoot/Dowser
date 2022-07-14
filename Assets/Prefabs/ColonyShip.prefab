@@ -122,6 +122,7 @@ GameObject:
   - component: {fileID: 8699638844575107764}
   - component: {fileID: 8699638844575107763}
   - component: {fileID: 8699638844575107762}
+  - component: {fileID: 8354450936625950305}
   m_Layer: 0
   m_Name: ColonyShip
   m_TagString: Untagged
@@ -171,6 +172,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e168032e46d535f4ba6589c839b88aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8354450936625950305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8699638844575107765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89f5e624823627d48b29dc85c6ca5afc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: -1
+  type: 0
+  single: 1
 --- !u!1001 &8699638845104583561
 PrefabInstance:
   m_ObjectHideFlags: 0

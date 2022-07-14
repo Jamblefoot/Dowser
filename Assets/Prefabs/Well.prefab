@@ -5307,6 +5307,7 @@ GameObject:
   - component: {fileID: 5024547026380983490}
   - component: {fileID: 3362564635543697341}
   - component: {fileID: 7497290601671800886}
+  - component: {fileID: 6931775310027707042}
   m_Layer: 0
   m_Name: Well
   m_TagString: Untagged
@@ -5354,6 +5355,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
+  output: 0
   ship: {fileID: 0}
 --- !u!54 &5024547026380983490
 Rigidbody:
@@ -5396,6 +5398,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e168032e46d535f4ba6589c839b88aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6931775310027707042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3840342665773942216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89f5e624823627d48b29dc85c6ca5afc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: -1
+  type: 0
 --- !u!1 &5483101925781345291
 GameObject:
   m_ObjectHideFlags: 0
@@ -5458,8 +5474,22 @@ MonoBehaviour:
         m_CallState: 2
   connectionLost:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 310864370147252406}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   root: {fileID: 6577878816815562886}
+  flow: 10
+  liquidType: 0
 --- !u!135 &7796354822362203905
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -78,6 +78,7 @@ public class PlayerControl : MonoBehaviour
             //if(leftStep)
             //{
                 legRot += leftStep * Time.deltaTime * stepSpeed;// / (Quaternion.Angle(legLeft.localRotation, Quaternion.Euler(leftStep * 60, 0, 0)) / 180);
+                legRot = WrapAngle(legRot);
                 if(Mathf.Abs(legRot) >= 60)
                 {
                     if(!stepSwitch)
@@ -264,5 +265,12 @@ public class PlayerControl : MonoBehaviour
             Vector2 slashPos = new Vector2(sideDot, upDot);
             hurtUI.SlashAtPosition(slashPos);
         }
+    }
+
+    float WrapAngle(float angle)
+    {
+        if(Mathf.Abs(angle) > 180)
+            return angle - 360 * Mathf.Sign(angle);
+        return angle;
     }
 }

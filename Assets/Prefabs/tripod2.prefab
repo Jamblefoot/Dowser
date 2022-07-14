@@ -292,7 +292,7 @@ GameObject:
   - component: {fileID: 6492627234028021751}
   - component: {fileID: 6492627234028021745}
   - component: {fileID: 6796516464585650482}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: tripod2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -365,7 +365,7 @@ MonoBehaviour:
   target: {fileID: 0}
   targetLayers:
     serializedVersion: 2
-    m_Bits: 513
+    m_Bits: 2560
   groundLayers:
     serializedVersion: 2
     m_Bits: 257

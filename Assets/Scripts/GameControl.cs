@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using WorldStreamer2;
+using UnityEngine.SceneManagement;
 
 public class GameControl : MonoBehaviour
 {
     public static GameControl instance;
 
     public bool inMenu;
+    [SerializeField] GameObject menuCanvas;
+    [SerializeField] GameObject mapCanvas;
 
     public float time;
 
@@ -15,9 +18,9 @@ public class GameControl : MonoBehaviour
 
     WorldMover worldMover;
     Vector3 offset = new Vector3(1000f, 0f, 1000f);
-    Vector3 planetMapDimensions = new Vector3(3000, 0, 3000);
-    float planetCircumVert = 3000f;
-    float planetCircumHor = 3000f;
+    public Vector3 planetMapDimensions = new Vector3(3000, 0, 3000);
+    //float planetCircumVert = 3000f;
+    //float planetCircumHor = 3000f;
 
     float liquidPerlinScale = 0.05f;
 
@@ -36,12 +39,14 @@ public class GameControl : MonoBehaviour
             DestroyImmediate(gameObject);
         else GameControl.instance = this;
 
+        worldMover = FindObjectOfType<WorldMover>();
 
+        
     }
 
     void Start()
     {
-        worldMover = FindObjectOfType<WorldMover>();
+        if (menuCanvas != null) menuCanvas.SetActive(false);
 
         player = FindObjectOfType<PlayerControl>();
 
@@ -51,21 +56,38 @@ public class GameControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetButtonDown("Cancel"))
+            inMenu = !inMenu;
+
+        if(Input.GetKeyDown(KeyCode.M))
+        {
+            mapCanvas.SetActive(!mapCanvas.activeSelf);
+        }
+
         if(inMenu)
         {
             Cursor.lockState = CursorLockMode.None;
+            if(!menuCanvas.activeSelf)
+                menuCanvas.SetActive(true);
         }
         else
         {
             Cursor.lockState = CursorLockMode.Locked;
             time += Time.deltaTime;
+            if(menuCanvas.activeSelf)
+                menuCanvas.SetActive(false);
         }
     }
 
-    public Vector3 GetPlanetMapPos(Vector3 pos)
+    public Vector3 GetPlanetMapPos(Vector3 pos) //this pos is a world pos, returns planet relative
     {
-        Vector3 result = pos + worldMover.currentMove + offset;
-        return new Vector3(result.x % planetCircumHor, 0, result.z % planetCircumVert);
+        Vector3 result = pos - worldMover.currentMove + offset;
+        return new Vector3(result.x % planetMapDimensions.x, pos.y, result.z % planetMapDimensions.z);
+    }
+    public Vector3 GetMovedWorldPos(Vector3 pos) //this pos is a planet relative pos, returns world relative
+    {
+        Vector3 result =  pos - worldMover.currentMove - offset;
+        return new Vector3(result.x % planetMapDimensions.x, pos.y, result.z % planetMapDimensions.z);
     }
     public Vector3 GetMapNorthWorldPos()// this asserts north pole to be the center of the map, south is the corners
     {
@@ -102,5 +124,14 @@ public class GameControl : MonoBehaviour
 
             yield return new WaitForSeconds(Random.Range(30f, 360f));
         }
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
+    public void Restart()
+    {
+        SceneManager.LoadScene(0);//SceneManager.GetActiveScene().buildIndex);
     }
 }

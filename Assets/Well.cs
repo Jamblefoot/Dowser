@@ -23,7 +23,7 @@ public class Well : MonoBehaviour
     [SerializeField] LayerMask groundLayer;
 
     float richness = 0;
-    int output = 0; //this will be code for type of output
+    public int output = 0; //this will be code for type of output
 
     public Ship ship;
     // Start is called before the first frame update
@@ -31,12 +31,6 @@ public class Well : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>();
         tran = transform;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void GoToLocation(Vector3 pos)
@@ -114,31 +108,104 @@ public class Well : MonoBehaviour
             StartCoroutine(StartPumping());
     }
 
-    IEnumerator StartPumping()
+    public void Plant()
     {
-        pumping = true;
+        planted = true;
+        rigid.isKinematic = true;
 
-        float rand = Random.value;
-        if(rand <= 0.1f)
+        if (smoke != null)
         {
-            //nothing
-            output = 0;
+            var smokeEmission = smoke.emission;
+            smokeEmission.rateOverTime = 0;
         }
-        else if(rand <= 0.5f)
+    }
+
+    public void ContinuePumping(int type)
+    {
+        output = type;
+        if (output != 0)
         {
-            //water
-            output = 1;
-        }
-        else if(rand <= 0.8f)
-        {
-            //oil
-            output = 2;
+            Material material = null;
+            switch (output)
+            {
+                case 1: //water
+                    material = GameControl.instance.waterMaterial;
+                    break;
+                case 2: //oil
+                    material = GameControl.instance.oilMaterial;
+                    break;
+            }
+            liquid.GetComponent<ParticleSystemRenderer>().material = material;
+
+            richness = GameControl.instance.GetLiquidAmount(transform.position);
+
+            if (output != 3)
+            {
+                if (liquid != null && liquid.gameObject.activeSelf)
+                {
+                    var liquidEmission = liquid.emission;
+                    liquidEmission.rateOverTime = richness * 10;
+                    liquid.Play();
+                }
+
+                int lightLevel = Mathf.CeilToInt(richness * lights.Length);
+                for (int i = 0; i < lightLevel; i++)
+                {
+                    lights[i].material.EnableKeyword("_EMISSION");
+                    lights[i].GetComponent<Light>().enabled = true;
+                }
+
+                Puddle pud = GetComponentInChildren<Puddle>();
+                pud.Grow(1 + richness * 4f, richness);
+                pud.GetComponent<MeshRenderer>().material = material;
+            }
+            else
+            {
+                if (liquid != null && liquid.gameObject.activeSelf)
+                    liquid.GetComponent<Spawner>().Spawn();
+                lights[0].material.EnableKeyword("_EMISSION");
+                lights[0].GetComponent<Light>().enabled = true;
+            }
+
+            Connection con = GetComponentInChildren<Connection>();
+            con.flow = richness * 20;
+            con.liquidType = output - 1;
         }
         else
         {
-            //monsters
-            output = 3;
+            GetComponentInChildren<Connection>().enabled = false;
         }
+    }
+
+    IEnumerator StartPumping(int op = -1)
+    {
+        pumping = true;
+
+        if(op < 0)
+        {
+            float rand = Random.value;
+            if(rand <= 0.1f)
+            {
+                //nothing
+                output = 0;
+            }
+            else if(rand <= 0.5f)
+            {
+                //water
+                output = 1;
+            }
+            else if(rand <= 0.8f)
+            {
+                //oil
+                output = 2;
+            }
+            else
+            {
+                //monsters
+                output = 3;
+            }
+        }
+        else output = op;
 
         Material material = null;
 

@@ -13,16 +13,10 @@ public class Puddle : MonoBehaviour
     Mesh mesh;
     Vector3[] vertices;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         mesh = GetComponent<MeshFilter>().mesh;
         vertices = mesh.vertices;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void Grow(float size, float speed)

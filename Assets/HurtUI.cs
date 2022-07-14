@@ -14,12 +14,6 @@ public class HurtUI : MonoBehaviour
         canTran = GetComponent<RectTransform>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void SlashAtPosition(Vector2 pos)
     {
         GameObject slash = Instantiate(slashPrefab, transform.position, transform.rotation, transform);

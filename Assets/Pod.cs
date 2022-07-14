@@ -109,6 +109,10 @@ public class Pod : MonoBehaviour
         fill = contents / maxFill;
         SetLiquidMaterial();
     }
+    public Vector3 GetLiquid()
+    {
+        return new Vector3(contents, (oilAmount / contents) * 100, (bioAmount / contents) * 100);
+    }
 
     void SetLiquidMaterial()
     {
