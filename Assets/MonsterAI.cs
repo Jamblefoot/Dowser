@@ -6,6 +6,7 @@ public class MonsterAI : MonoBehaviour
 {
     Animator anim;
     Rigidbody rigid;
+    AudioSource audioSource;
 
     public Transform target;
     public LayerMask targetLayers;
@@ -36,6 +37,8 @@ public class MonsterAI : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
 
         tran = transform;
+
+        audioSource = GetComponentInChildren<AudioSource>();
     }
 
     // Update is called once per frame
@@ -182,5 +185,13 @@ public class MonsterAI : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         attacking = false;
+    }
+
+    public void PlayFootstep()
+    {
+        if(audioSource != null)
+        {
+            audioSource.PlayOneShot(GameControl.instance.GetFootstep());
+        }
     }
 }

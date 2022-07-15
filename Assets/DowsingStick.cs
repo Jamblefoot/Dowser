@@ -42,7 +42,10 @@ public class DowsingStick : MonoBehaviour
                 dist = Mathf.Min(dist, Vector3.Distance(hit.point, flag.transform.position));
             }
             if(dist <= 50f)
+            {
+                GameControl.instance.DisplayAlert("too close to other well", 4f);
                 return false;
+            }
 
             foreach(Well well in FindObjectsOfType<Well>())
             {
@@ -58,6 +61,7 @@ public class DowsingStick : MonoBehaviour
             }
             else
             {
+                GameControl.instance.DisplayAlert("too close to other well", 4f);
                 Debug.Log("Too close to other well");
             }
         }

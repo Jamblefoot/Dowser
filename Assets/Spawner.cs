@@ -9,7 +9,7 @@ public class Spawner : MonoBehaviour
     public float delayMax = 5f;
 
     bool spawning;
-    bool isFunctional;
+    public bool isFunctional;
 
     int spawnMax = 20;
     GameObject[] spawns;

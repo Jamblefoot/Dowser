@@ -12,15 +12,17 @@ public class Pod : MonoBehaviour
 
     bool falling;
 
-    [Range(0,1)]public float fill = 0;
-    float maxFill = 1000;
-    public float contents = 0;
-    public float waterAmount = 0;
-    public float oilAmount = 0;
-    public float bioAmount = 0;
+    [Range(0,1)]public float fill = 0f;
+    float maxFill = 1000f;
+    public float contents = 0f;
+    public float waterAmount = 0f;
+    public float oilAmount = 0f;
+    public float bioAmount = 0f;
 
     [SerializeField] GameObject personPrefab;
     PersonAI person;
+
+    [SerializeField] LayerMask groundLayers;
 
     // Start is called before the first frame update
     void Awake()
@@ -64,6 +66,8 @@ public class Pod : MonoBehaviour
         rigid.WakeUp();
         while(!rigid.IsSleeping())
         {
+            CheckGrounded();
+
             yield return new WaitForSeconds(Random.value * 5f);
         }
 
@@ -103,21 +107,21 @@ public class Pod : MonoBehaviour
     public void SetLiquid(float amount, float oilPercent = 0, float bioPercent = 0)
     {
         contents = Mathf.Clamp(amount, 0f, maxFill);
-        oilAmount = oilPercent * (amount / 100);
-        bioAmount = bioPercent * (amount / 100);
+        oilAmount = oilPercent * (amount / 100f);
+        bioAmount = bioPercent * (amount / 100f);
         waterAmount = contents - oilAmount - bioAmount;
         fill = contents / maxFill;
         SetLiquidMaterial();
     }
     public Vector3 GetLiquid()
     {
-        return new Vector3(contents, (oilAmount / contents) * 100, (bioAmount / contents) * 100);
+        return new Vector3(contents, contents <= 0 ? 0 : (oilAmount / contents) * 100f, contents <= 0 ? 0 : (bioAmount / contents) * 100f);
     }
 
     void SetLiquidMaterial()
     {
         Material mat = podRenderer.materials[windowMaterialIndex];
-        mat.SetFloat("_LiquidHeight", fill * 2 - 1);
+        mat.SetFloat("_LiquidHeight", fill * 2f - 1f);
         mat.SetFloat("_OilHeight", oilAmount / contents);
         mat.SetFloat("_BioWeight", bioAmount / (bioAmount + waterAmount));
     }
@@ -125,5 +129,26 @@ public class Pod : MonoBehaviour
     void CreatePerson()
     {
         person = Instantiate(personPrefab, transform.position, Quaternion.identity).GetComponent<PersonAI>();
+    }
+
+    bool CheckGrounded()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity, groundLayers, QueryTriggerInteraction.Ignore))
+        {
+            if (hit.distance <= 3f)
+                return true;
+        }
+        else
+        {
+            if (Physics.Raycast(transform.position + Vector3.up * 2000f, Vector3.down, out hit, 2000, groundLayers, QueryTriggerInteraction.Ignore))
+            {
+                transform.position = hit.point + Vector3.up * 3f;
+                Debug.Log("pod was underground!");
+                return true;
+            }
+        }
+
+        return false;
     }
 }

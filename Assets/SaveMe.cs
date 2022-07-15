@@ -8,14 +8,17 @@ public class SaveMe : MonoBehaviour
     public int type;
     public bool single;
 
+    public bool initialize = true;
+
     // Start is called before the first frame update
     void Start()
     {
         type = FigureOutType();
-        Invoke("Init", 1.5f);
+        if(initialize)
+            Invoke("Init", 0.5f);
         
     }
-    void Init()
+    public void Init()
     {
         if (id < 0)
             SaveControl.instance.AddSaveObject(this);

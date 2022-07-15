@@ -13,6 +13,9 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] LayerMask groundLayers;
     [SerializeField] LayerMask kickLayers;
 
+    AudioSource leftFootAudio;
+    AudioSource rightFootAudio;
+
     float moveSpeed = 10;
     float slowSpeed = 2f;
     float stepSpeed = 300;
@@ -51,11 +54,17 @@ public class PlayerControl : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>();
         
+        if(legLeft != null)
+            leftFootAudio = legLeft.GetComponentInChildren<AudioSource>();
+        if (legRight != null)
+            rightFootAudio = legRight.GetComponentInChildren<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(GameControl.instance.inMenu) return;
+
         vertical = Input.GetAxis("Vertical");
         horizontal = Input.GetAxis("Horizontal");
         Vector3 mouse = Input.mousePosition;
@@ -85,6 +94,12 @@ public class PlayerControl : MonoBehaviour
                     {
                         leftStep = -leftStep;
                         stepSwitch = true;
+                        if(grounded)
+                        {
+                            if(leftStep > 0)
+                                leftFootAudio.PlayOneShot(GameControl.instance.GetFootstep());
+                            else rightFootAudio.PlayOneShot(GameControl.instance.GetFootstep());
+                        }
                     }
                 }
                 else stepSwitch = false;
@@ -172,6 +187,11 @@ public class PlayerControl : MonoBehaviour
         RaycastHit hit;
         if(Physics.SphereCast(tran.position + tran.up * 0.4f, 0.3f, -tran.up, out hit, 0.2f, groundLayers, QueryTriggerInteraction.Ignore))
         {
+            if(!grounded)
+            {
+                leftFootAudio.PlayOneShot(GameControl.instance.GetFootstep());
+                rightFootAudio.PlayOneShot(GameControl.instance.GetFootstep());
+            }
             grounded = true;
 
             if(groundAnchor == null)
@@ -184,6 +204,13 @@ public class PlayerControl : MonoBehaviour
         }
         else
         {
+            if (Physics.Raycast(tran.position + Vector3.up * 1000f, Vector3.down, out hit, 1000, groundLayers, QueryTriggerInteraction.Ignore))
+            {
+                tran.position = hit.point;
+                Debug.Log("Player was underground!");
+            }
+
+
             grounded = false;
 
             if(groundAnchor == null)
@@ -195,6 +222,8 @@ public class PlayerControl : MonoBehaviour
             groundNormal = Vector3.up;
         }
     }
+
+
 
     public void Kick()
     {
@@ -218,6 +247,17 @@ public class PlayerControl : MonoBehaviour
         RaycastHit hit;
         if(Physics.SphereCast(tran.position + tran.up, 0.25f, body.forward, out hit, 2f, kickLayers, QueryTriggerInteraction.Ignore))
         {
+            if(leftStep > 0)
+            {
+                if (rightFootAudio != null)
+                    rightFootAudio.PlayOneShot(GameControl.instance.GetHit());
+            }
+            else
+            {
+                if (leftFootAudio != null)
+                    leftFootAudio.PlayOneShot(GameControl.instance.GetHit());
+            }
+
             if(hit.collider.attachedRigidbody != null)// && !hit.collider.attachedRigidbody.isKinematic)
             {
                 Rigidbody rb = hit.collider.attachedRigidbody;
@@ -232,7 +272,12 @@ public class PlayerControl : MonoBehaviour
                 {
                     Pod pod = hit.collider.GetComponentInParent<Pod>();
                     if(pod != null)
+                    {
                         pod.Fall();
+                        CollisionAudio colAudio = pod.GetComponent<CollisionAudio>();
+                        if(colAudio != null)
+                            colAudio.PlayHit();
+                    }
                 }
 
                 Vector3 force = body.forward + (rb.worldCenterOfMass - hit.point).normalized;//rb.worldCenterOfMass - hit.point;

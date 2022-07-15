@@ -11,6 +11,7 @@ public class Well : MonoBehaviour
 
     Rigidbody rigid;
     Transform tran;
+    AudioSource audioSource;
 
     [SerializeField] ParticleSystem smoke;
     [SerializeField] ParticleSystem liquid;
@@ -31,6 +32,7 @@ public class Well : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>();
         tran = transform;
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void GoToLocation(Vector3 pos)
@@ -42,6 +44,8 @@ public class Well : MonoBehaviour
     IEnumerator MoveCo(Vector3 pos)
     {
         moving = true;
+        if(audioSource != null)
+            audioSource.Play();
         while((tran.position - pos).sqrMagnitude > 0.5f && !planted)
         {
             Vector3 position = tran.position;
@@ -82,6 +86,11 @@ public class Well : MonoBehaviour
 
         moving = false;
         rigid.isKinematic = true;
+        if(audioSource != null)
+        {
+            audioSource.Stop();
+            audioSource.PlayOneShot(GameControl.instance.GetThud());
+        }
         
 
         
@@ -133,6 +142,9 @@ public class Well : MonoBehaviour
                     break;
                 case 2: //oil
                     material = GameControl.instance.oilMaterial;
+                    break;
+                case 3:
+                    GetComponentInChildren<Spawner>().isFunctional = true;
                     break;
             }
             liquid.GetComponent<ParticleSystemRenderer>().material = material;
@@ -230,6 +242,8 @@ public class Well : MonoBehaviour
         if(output != 0)
         {
             //TODO make some initial gurgling noise
+            if(liquid != null)
+                liquid.GetComponentInChildren<AudioSource>().Play();
 
             yield return new WaitForSeconds(Random.value * 5f);
 

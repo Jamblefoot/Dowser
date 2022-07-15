@@ -57,6 +57,10 @@ public class SaveControl : MonoBehaviour
         //{
         //    LoadFromPosition(GameControl.instance.GetPlanetMapPos(GameControl.instance.player.tran.position));
         //}
+        foreach(SaveMe sm in FindObjectsOfType<SaveMe>())
+        {
+            sm.Init();
+        }
 
         StartCoroutine(LoadAndUnload());
         StartCoroutine(Autosave());
@@ -177,11 +181,12 @@ public class SaveControl : MonoBehaviour
 
         //Vector3 pos = GameControl.instance.GetPlanetMapPos(worldPos);
         float sqrdist = loadDistance * loadDistance;
+        Vector3 playerPos = GameControl.instance.GetPlanetMapPos(GameControl.instance.player.transform.position);
         for(int i = 0; i < saveObjects.Count; i++)
         {
             if(saveObjects[i].active) continue;
             
-            Vector3 soWorldPos = GameControl.instance.GetMovedWorldPos(saveObjects[i].position);
+            Vector3 soWorldPos = GameControl.instance.GetWorldPosRelative(saveObjects[i].position, playerPos);
             if((soWorldPos - worldPos).sqrMagnitude < sqrdist)
             {
                 GameObject go = null;
@@ -189,14 +194,18 @@ public class SaveControl : MonoBehaviour
                 {
                     case 0: //player - custom = (-, -, -)
                         //don't instantiate, set position, leave rotation, 
-                        GameControl.instance.player.tran.position = soWorldPos;
+                        GameControl.instance.player.tran.position = GameControl.instance.GetMovedWorldPos(saveObjects[i].position);
                         go = GameControl.instance.player.gameObject;
                         //custom - health?
                         break;
                     case 1: //ship - custom = (-, -, -)
-                        go = FindObjectOfType<Ship>().gameObject;
-                        go.transform.position = soWorldPos;
-                        go.transform.rotation = saveObjects[i].rotation;
+                        Ship ship = FindObjectOfType<Ship>();
+                        if(ship != null)
+                        {
+                            go = FindObjectOfType<Ship>().gameObject;
+                            go.transform.position = soWorldPos;
+                            go.transform.rotation = saveObjects[i].rotation;
+                        }
                         break;
                     case 2: //well - custom = (type, -, -)
                         go = Instantiate(wellPrefab, soWorldPos, saveObjects[i].rotation);
@@ -231,6 +240,7 @@ public class SaveControl : MonoBehaviour
         for (int i = 0; i < saveObjects.Count; i++)
         {
             if (!saveObjects[i].active || saveObjects[i].tran == null) continue;
+            if(saveObjects[i].type <= 1) continue;
 
             if ((saveObjects[i].tran.position - pos).sqrMagnitude > sqrdist)
             {
@@ -257,7 +267,7 @@ public class SaveControl : MonoBehaviour
                 {
                     saveObjects[i].active = true;
                     saveObjects[i].tran = sm.transform;
-                    sm.transform.position = saveObjects[i].position;
+                    sm.transform.position = GameControl.instance.GetMovedWorldPos(saveObjects[i].position);
                     sm.transform.rotation = saveObjects[i].rotation;
                     return;
                 }

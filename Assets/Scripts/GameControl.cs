@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using WorldStreamer2;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameControl : MonoBehaviour
 {
@@ -11,8 +12,13 @@ public class GameControl : MonoBehaviour
     public bool inMenu;
     [SerializeField] GameObject menuCanvas;
     [SerializeField] GameObject mapCanvas;
+    [SerializeField] GameObject tipCanvas;
+    [SerializeField] Text alertText;
 
     public float time;
+    bool displayingAlert;
+
+    public bool mapDebug = false;
 
     public PlayerControl player;
 
@@ -31,6 +37,12 @@ public class GameControl : MonoBehaviour
 
     public GameObject monsterPrefab;
     GameObject[] monsters = new GameObject[10];
+
+    [SerializeField] AudioClip[] footstepSounds;
+    [SerializeField] AudioClip[] squishSounds;
+    [SerializeField] AudioClip[] bounceSounds;
+    [SerializeField] AudioClip[] hitSounds;
+    [SerializeField] AudioClip[] thudSounds;
 
     // Start is called before the first frame update
     void Awake()
@@ -63,6 +75,16 @@ public class GameControl : MonoBehaviour
         {
             mapCanvas.SetActive(!mapCanvas.activeSelf);
         }
+        if(Input.GetKeyDown(KeyCode.T))
+        {
+            tipCanvas.SetActive(!tipCanvas.activeSelf);
+        }
+        if(mapCanvas.activeSelf)
+        {
+            if(Input.GetKeyDown(KeyCode.L))
+                mapDebug = !mapDebug;
+        }
+        else mapDebug = false;
 
         if(inMenu)
         {
@@ -82,13 +104,43 @@ public class GameControl : MonoBehaviour
     public Vector3 GetPlanetMapPos(Vector3 pos) //this pos is a world pos, returns planet relative
     {
         Vector3 result = pos - worldMover.currentMove + offset;
-        return new Vector3(result.x % planetMapDimensions.x, pos.y, result.z % planetMapDimensions.z);
+        result.x %= planetMapDimensions.x;
+        result.z %= planetMapDimensions.z;
+        while(result.x < 0) result.x += planetMapDimensions.x;
+        while(result.x > planetMapDimensions.x) result.x -= planetMapDimensions.x;
+        while(result.z < 0) result.z += planetMapDimensions.z;
+        while(result.z > planetMapDimensions.z) result.z -= planetMapDimensions.z;
+        return result;//new Vector3(result.x % planetMapDimensions.x, pos.y, result.z % planetMapDimensions.z);
+    }
+    public Vector3 GetPlayerWorldPos(Vector3 pos)
+    {
+        Vector3 result = pos - offset;
+        return new Vector3(result.x, pos.y, result.z);
     }
     public Vector3 GetMovedWorldPos(Vector3 pos) //this pos is a planet relative pos, returns world relative
     {
-        Vector3 result =  pos - worldMover.currentMove - offset;
-        return new Vector3(result.x % planetMapDimensions.x, pos.y, result.z % planetMapDimensions.z);
+        Vector3 result =  pos - offset;
+        result += worldMover.currentMove;
+        //if(result.x < -planetMapDimensions.x * 0.5f)
+        return new Vector3(result.x, pos.y, result.z);//(result.x % planetMapDimensions.x, pos.y, result.z % planetMapDimensions.z);
     }
+    public Vector3 GetWorldPosRelative(Vector3 pos, Vector3 relativePos)// both these pos's are planet relative
+    {
+        Vector3 result = pos;
+        float middle = planetMapDimensions.x * 0.5f;
+        Vector2 offsetFromCenter = new Vector2(middle - relativePos.x, middle - relativePos.z);
+        if(pos.x > planetMapDimensions.x - offsetFromCenter.x)
+            result.x -= planetMapDimensions.x;
+        else if(pos.x < -offsetFromCenter.x)
+            result.x += planetMapDimensions.x;
+        if(pos.z > planetMapDimensions.z - offsetFromCenter.y)
+            result.z -= planetMapDimensions.z;
+        else if(pos.z < -offsetFromCenter.y)
+            result.z += planetMapDimensions.z;
+
+        return GetMovedWorldPos(result);
+    }
+
     public Vector3 GetMapNorthWorldPos()// this asserts north pole to be the center of the map, south is the corners
     {
         Vector3 center = planetMapDimensions * 0.5f - offset - worldMover.currentMove;
@@ -126,6 +178,22 @@ public class GameControl : MonoBehaviour
         }
     }
 
+    public void DisplayAlert(string alert, float seconds)
+    {
+        if(displayingAlert) StopCoroutine("DisplayAlertCo");
+        StartCoroutine(DisplayAlertCo(alert, seconds));
+    }
+    IEnumerator DisplayAlertCo(string alert, float seconds)
+    {
+        displayingAlert = true;
+        alertText.text = alert;
+
+        yield return new WaitForSeconds(seconds);
+
+        alertText.text = "";
+        displayingAlert = false;
+    }
+
     public void Quit()
     {
         Application.Quit();
@@ -133,5 +201,26 @@ public class GameControl : MonoBehaviour
     public void Restart()
     {
         SceneManager.LoadScene(0);//SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public AudioClip GetFootstep()
+    {
+        return footstepSounds[Random.Range(0, footstepSounds.Length)];
+    }
+    public AudioClip GetSquish()
+    {
+        return squishSounds[Random.Range(0, squishSounds.Length)];
+    }
+    public AudioClip GetBounce()
+    {
+        return bounceSounds[Random.Range(0, bounceSounds.Length)];
+    }
+    public AudioClip GetHit()
+    {
+        return hitSounds[Random.Range(0, hitSounds.Length)];
+    }
+    public AudioClip GetThud()
+    {
+        return thudSounds[Random.Range(0, thudSounds.Length)];
     }
 }
